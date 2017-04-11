@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">RecipePirate</string>
+
+    <!--Menus-->
+    <string name="action_done">Done</string>
+    <string name="action_search">Search</string>
+    <string name="action_share">Share</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">recipebook.example.com</string>
+    <string name="content_authority">com.example.android.recipebook.app</string>
+
+</resources>

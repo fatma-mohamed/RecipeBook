@@ -1,0 +1,28 @@
+<resources>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Cyan_Lime.." parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/defaultPrimaryColor</item>
+        <item name="colorPrimaryDark">@color/darkPrimaryColor</item>
+        <item name="colorAccent">@color/accentColor</item>
+        <item name="android:colorForeground">@color/primaryTextColor</item>
+        <item name="android:statusBarColor">@color/darkPrimaryColor</item>
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:navigationBarColor">@color/defaultPrimaryColor</item>
+    </style>
+
+    <style name="Cyan_Lime." parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/defaultPrimaryColor</item>
+        <item name="colorPrimaryDark">@color/darkPrimaryColor</item>
+        <item name="colorAccent">@color/accentColor</item>
+        <item name="android:colorForeground">@color/primaryTextColor</item>
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:navigationBarColor">@color/defaultPrimaryColor</item>
+    </style>
+</resources>

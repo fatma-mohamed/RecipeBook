@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.android.recipebook.app.MainActivity">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/recipe_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="5dp"
+            android:hint="Recipe name"
+            android:textColorHint="@color/coloHint"
+            android:textColor="@color/coloInput"
+            android:backgroundTint="@color/colorPrimary"
+            android:textSize="@dimen/text_input"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="7dp">
+
+            <TextView
+                android:id="@+id/label_time"
+                android:text="Preparation time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_label"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:inputType="time"
+                android:textColor="@color/coloInput"
+                android:textSize="@dimen/text_input"
+                android:textAlignment="center"
+                android:backgroundTint="@android:color/transparent"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="7dp">
+
+            <TextView
+                android:id="@+id/label_numServings"
+                android:text="Number of servings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_label"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/numServings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/coloInput"
+                android:textSize="@dimen/text_input"
+                android:textAlignment="center"
+                android:backgroundTint="@android:color/transparent"
+                android:inputType="number"/>
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/label_ingredients"
+            android:text="Ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/coloHint"
+            android:padding="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="@dimen/text_label"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginLeft="5dp"
+            android:inputType="textMultiLine"
+            android:textColor="@color/coloInput"
+            android:ems="10"
+            android:textSize="@dimen/text_input"
+            android:backgroundTint="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/label_directions"
+            android:text="Directions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/coloHint"
+            android:padding="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="@dimen/text_label"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/directions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginLeft="5dp"
+            android:inputType="textMultiLine"
+            android:textColor="@color/coloInput"
+            android:ems="10"
+            android:textSize="@dimen/text_input"
+            android:backgroundTint="@color/colorPrimary"/>
+
+
+
+    </GridLayout>
+
+</ScrollView>
