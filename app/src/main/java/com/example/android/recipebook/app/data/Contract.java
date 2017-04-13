@@ -19,7 +19,7 @@ public class Contract {
 
     /**************************************/
 
-    public static final String CONTENT_AUTHORITY = "com.example.android.movies";
+    public static final String CONTENT_AUTHORITY = "com.example.android.recipebook.app";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public  static final String PATH_FAV = "favourites";
@@ -41,6 +41,10 @@ public class Contract {
         public static final String TABLE_NAME = "favourites";
         public static final String _ID = "fav_recipe_id";
         public static final String NAME = "fav_recipe_name";
+        public static final String PUBLISHER = "publisher";
+        public static final String SOURCE_URL = "source_url";
+        public static final String IMAGE_URL = "image_url";
+
 
         public static Uri buildFavouriteUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -55,9 +59,6 @@ public class Contract {
         public static final String TABLE_NAME = "recipes";
         public static final String _ID = "recipe_id";
         public static final String NAME = "recipe_name";
-        public static final String PUBLISHER = "publisher";
-        public static final String SOURCE_URL = "source_url";
-        public static final String IMAGE_URL = "image_url";
 
         public static Uri buildRecipeUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

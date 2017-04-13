@@ -1,6 +1,5 @@
 package com.example.android.recipebook.app.data;
 
-import static android.R.attr.id;
 
 /**
  * Created by Fatma on 08-Jan-17.
