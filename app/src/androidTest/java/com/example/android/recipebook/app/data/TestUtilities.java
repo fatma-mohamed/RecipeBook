@@ -31,8 +31,8 @@ public class TestUtilities extends AndroidTestCase {
     static ContentValues createFavouritesValues()
     {
         ContentValues values = new ContentValues();
-        values.put(Contract.FavouriteEntry._ID, TEST_RECIPE_ID);
-        values.put(Contract.FavouriteEntry.NAME,TEST_RECIPE_NAME);
+        values.put(Contract.BookmarkedEntry._ID, TEST_RECIPE_ID);
+        values.put(Contract.BookmarkedEntry.NAME,TEST_RECIPE_NAME);
         return values;
     }
 }

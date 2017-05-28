@@ -29,7 +29,7 @@ public class TestDB extends AndroidTestCase {
     public void testCreateDB()
     {
         final HashSet<String> tableNameHashSet = new HashSet<String>();
-        tableNameHashSet.add(Contract.FavouriteEntry.TABLE_NAME);
+        tableNameHashSet.add(Contract.BookmarkedEntry.TABLE_NAME);
 
         setUp();
         SQLiteDatabase db = new DatabaseHelper(this.mContext).getWritableDatabase();
@@ -51,15 +51,15 @@ public class TestDB extends AndroidTestCase {
                 tableNameHashSet.isEmpty());
 
         // now, does my table contain the correct columns?
-        c = db.rawQuery("PRAGMA table_info(" + Contract.FavouriteEntry.TABLE_NAME + ")",
+        c = db.rawQuery("PRAGMA table_info(" + Contract.BookmarkedEntry.TABLE_NAME + ")",
                 null);
         assertTrue("Error: This means that we were unable to query the database for table information(Columns).",
                 c.moveToFirst());
 
         // Build a HashSet of all of the column names we want to look for
         final HashSet<String> favouritesColumnHashSet = new HashSet<String>();
-        favouritesColumnHashSet.add(Contract.FavouriteEntry._ID);
-        favouritesColumnHashSet.add(Contract.FavouriteEntry.NAME);
+        favouritesColumnHashSet.add(Contract.BookmarkedEntry._ID);
+        favouritesColumnHashSet.add(Contract.BookmarkedEntry.NAME);
 
         int columnNameIndex = c.getColumnIndex("name");
         do {
@@ -81,11 +81,11 @@ public class TestDB extends AndroidTestCase {
 
         ContentValues values = TestUtilities.createFavouritesValues();
 
-        long dbRowID = db.insert(Contract.FavouriteEntry.TABLE_NAME,null,values);
+        long dbRowID = db.insert(Contract.BookmarkedEntry.TABLE_NAME,null,values);
         assertTrue(dbRowID!=-1);
 
         Cursor c = db.query(
-                Contract.FavouriteEntry.TABLE_NAME,
+                Contract.BookmarkedEntry.TABLE_NAME,
                 null,
                 null,
                 null,

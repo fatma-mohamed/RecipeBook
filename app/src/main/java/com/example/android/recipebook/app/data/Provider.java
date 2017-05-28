@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
-import static android.Manifest.permission_group.LOCATION;
-
 /**
  * Created by fatma on 12/2/2016.
  */
@@ -33,7 +31,7 @@ public class Provider extends ContentProvider {
         switch (sUriMatcher.match(uri)){
             case FAV:{
                 retCursor= dbHelper.getReadableDatabase().query(
-                        Contract.FavouriteEntry.TABLE_NAME,
+                        Contract.BookmarkedEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -77,9 +75,9 @@ public class Provider extends ContentProvider {
         {
             case FAV:
             {
-                long _id = db.insert(Contract.FavouriteEntry.TABLE_NAME,null,values);
+                long _id = db.insert(Contract.BookmarkedEntry.TABLE_NAME,null,values);
                 if(_id >0)
-                    returnUri = Contract.FavouriteEntry.buildFavouriteUri(_id);
+                    returnUri = Contract.BookmarkedEntry.buildFavouriteUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -109,7 +107,7 @@ public class Provider extends ContentProvider {
         switch(sUriMatcher.match(uri)){
             case FAV:{
                 rowsDeleted = db.delete(
-                        Contract.FavouriteEntry.TABLE_NAME, selection, selectionArgs);
+                        Contract.BookmarkedEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             }
             case REC:{
@@ -134,7 +132,7 @@ public class Provider extends ContentProvider {
 
         switch (match) {
             case FAV: {
-                rowsUpdated = db.update(Contract.FavouriteEntry.TABLE_NAME, values, selection,
+                rowsUpdated = db.update(Contract.BookmarkedEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             }
@@ -166,7 +164,7 @@ public class Provider extends ContentProvider {
         final String authority = Contract.CONTENT_AUTHORITY;
 
         // For each type of URI you want to add, create a corresponding code.
-        matcher.addURI(authority, Contract.PATH_FAV, FAV);
+        matcher.addURI(authority, Contract.PATH_BK, FAV);
         matcher.addURI(authority, Contract.PATH_REC, REC);
         return matcher;
     }

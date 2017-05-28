@@ -2,12 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
+    android:id="@+id/fragment_new_recipe"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.android.recipebook.app.MainActivity">
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
@@ -18,11 +19,10 @@
             android:padding="10dp"
             android:layout_margin="10dp"
             android:layout_marginTop="7dp"
-            android:layout_marginLeft="5dp"
             android:hint="Recipe name"
+            android:textAlignment="center"
             android:textColorHint="@color/coloHint"
-            android:textColor="@color/coloInput"
-            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/secondaryTextColor"
             android:textSize="@dimen/text_input"
             android:textStyle="bold"/>
 
@@ -32,7 +32,6 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:padding="10dp"
-            android:layout_marginLeft="5dp"
             android:layout_marginTop="7dp">
 
             <TextView
@@ -51,8 +50,7 @@
                 android:inputType="time"
                 android:textColor="@color/coloInput"
                 android:textSize="@dimen/text_input"
-                android:textAlignment="center"
-                android:backgroundTint="@android:color/transparent"/>
+                android:textAlignment="center"/>
 
         </LinearLayout>
 
@@ -62,7 +60,6 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:padding="10dp"
-            android:layout_marginLeft="5dp"
             android:layout_marginTop="7dp">
 
             <TextView
@@ -81,7 +78,6 @@
                 android:textColor="@color/coloInput"
                 android:textSize="@dimen/text_input"
                 android:textAlignment="center"
-                android:backgroundTint="@android:color/transparent"
                 android:inputType="number"/>
 
         </LinearLayout>
@@ -96,7 +92,6 @@
             android:textColorHint="@color/coloHint"
             android:padding="10dp"
             android:layout_marginTop="7dp"
-            android:layout_marginLeft="5dp"
             android:textSize="@dimen/text_label"
             android:textStyle="bold"/>
 
@@ -105,12 +100,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:layout_marginLeft="5dp"
-            android:inputType="textMultiLine"
+            android:paddingBottom="@dimen/list_item_padding_vertical"
+            android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
             android:textColor="@color/coloInput"
             android:ems="10"
-            android:textSize="@dimen/text_input"
-            android:backgroundTint="@color/colorPrimary"/>
+            android:textSize="@dimen/text_input"/>
 
         <TextView
             android:id="@+id/label_directions"
@@ -118,9 +112,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/coloHint"
+            android:paddingTop="@dimen/list_item_padding_vertical"
             android:padding="10dp"
             android:layout_marginTop="7dp"
-            android:layout_marginLeft="5dp"
             android:textSize="@dimen/text_label"
             android:textStyle="bold"/>
 
@@ -129,15 +123,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:layout_marginLeft="5dp"
-            android:inputType="textMultiLine"
+            android:singleLine="true"
+            android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
             android:textColor="@color/coloInput"
             android:ems="10"
-            android:textSize="@dimen/text_input"
-            android:backgroundTint="@color/colorPrimary"/>
+            android:textSize="@dimen/text_input"/>
 
 
 
-    </GridLayout>
+    </LinearLayout>
 
 </ScrollView>

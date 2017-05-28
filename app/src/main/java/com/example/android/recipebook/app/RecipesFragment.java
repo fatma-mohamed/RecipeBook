@@ -96,7 +96,6 @@ public class RecipesFragment extends Fragment implements SearchView.OnQueryTextL
         mAdapter = new MyRecipesAdapter(getActivity(),temp);
         list.setAdapter(mAdapter);
         getRecipesRequest(Contract.URL_SORT + "t");
-
         return view;
     }
 

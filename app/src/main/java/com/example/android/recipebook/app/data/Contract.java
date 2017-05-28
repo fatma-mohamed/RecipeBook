@@ -22,7 +22,7 @@ public class Contract {
     public static final String CONTENT_AUTHORITY = "com.example.android.recipebook.app";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public  static final String PATH_FAV = "favourites";
+    public  static final String PATH_BK = "bookmarked";
     public  static final String PATH_REC = "recipes";
 
     public static long normalizeDate(long startDate) {
@@ -34,11 +34,11 @@ public class Contract {
     }
 
 
-    public static final class FavouriteEntry implements BaseColumns {
+    public static final class BookmarkedEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI
-                .buildUpon().appendPath(PATH_FAV).build();
+                .buildUpon().appendPath(PATH_BK).build();
 
-        public static final String TABLE_NAME = "favourites";
+        public static final String TABLE_NAME = "bookmarked";
         public static final String _ID = "fav_recipe_id";
         public static final String NAME = "fav_recipe_name";
         public static final String PUBLISHER = "publisher";
@@ -59,6 +59,10 @@ public class Contract {
         public static final String TABLE_NAME = "recipes";
         public static final String _ID = "recipe_id";
         public static final String NAME = "recipe_name";
+        public static final String PREPARE_TIME = "prepare_time";
+        public static final String NUMBER_OF_SERVINGS = "num_servings";
+        public static final String INGREDIENTS = "ingredients";
+        public static final String DIRECTIONS = "directions";
 
         public static Uri buildRecipeUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

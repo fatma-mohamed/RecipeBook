@@ -14,21 +14,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.android.recipebook.app.data.Contract;
 import com.example.android.recipebook.app.data.DatabaseHelper;
 import com.example.android.recipebook.app.data.Recipe;
-import com.example.android.recipebook.app.data.RecipesParser;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import static com.example.android.recipebook.app.VolleyController.TAG;
 
 
 public class MyRecipesAdapter extends BaseAdapter implements Filterable{
@@ -72,7 +61,7 @@ public class MyRecipesAdapter extends BaseAdapter implements Filterable{
     }
 
     public Boolean showBookmarked(){
-        values = db.getFavourites();
+        values = db.getBookmarkedRecipes();
         if(values.size()==0)
             return false;
         notifyDataSetChanged();
@@ -94,7 +83,7 @@ public class MyRecipesAdapter extends BaseAdapter implements Filterable{
         Utilities.setImage(item,recipeIcon,path);
         recipeTitle.setText(values.get(position).getTitle());
         final ImageButton bookmark_btn = (ImageButton)item.findViewById(R.id.btn_bookmark);
-        if(db.exists(values.get(position).getTitle()))
+        if(db.favExists(values.get(position).getTitle()))
         {
             bookmark_btn.setImageResource(R.drawable.ic_action_bookmarked);
             btnClicked = true;
@@ -104,12 +93,12 @@ public class MyRecipesAdapter extends BaseAdapter implements Filterable{
             public void onClick(View view) {
                 if(!btnClicked){
                     bookmark_btn.setImageResource(R.drawable.ic_action_bookmarked);
-                    db.addFavourite(values.get(position));
+                    db.addBookmarkedRecipe(values.get(position));
                     btnClicked = true;
                 }
                 else{
                     bookmark_btn.setImageResource(R.drawable.ic_action_bookmark);
-                    db.deleteFavourite(values.get(position).getTitle());
+                    db.removeBookmarkedRecipe(values.get(position).getTitle());
                     btnClicked = false;
                 }
             }

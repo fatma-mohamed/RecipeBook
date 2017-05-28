@@ -7,13 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
 
-import static com.example.android.recipebook.app.data.Contract.FavouriteEntry.IMAGE_URL;
-import static com.example.android.recipebook.app.data.Contract.FavouriteEntry.PUBLISHER;
+import static com.example.android.recipebook.app.data.Contract.BookmarkedEntry.SOURCE_URL;
 
 /**
  * Created by Fatma on 25-Nov-16.
@@ -21,7 +19,7 @@ import static com.example.android.recipebook.app.data.Contract.FavouriteEntry.PU
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private final Context mContext;
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 8;
     private static String LOG_TAG = DatabaseHelper.class.getSimpleName();
 
     static final String DATABASE_NAME = "recipebook.db";
@@ -33,18 +31,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        final String SQL_CREATE_FAVOURITES_TABLE = "CREATE TABLE " + Contract.FavouriteEntry.TABLE_NAME + " (" +
-                Contract.FavouriteEntry._ID + " STRING PRIMARY KEY ," +
-                Contract.FavouriteEntry.NAME + " STRING NOT NULL,"+
-                Contract.FavouriteEntry.PUBLISHER + " STRING NOT NULL,"+
-                Contract.FavouriteEntry.SOURCE_URL + " STRING NOT NULL,"+
-                Contract.FavouriteEntry.IMAGE_URL + " STRING NOT NULL);";
+        final String SQL_CREATE_BOOKMARKED_TABLE = "CREATE TABLE " + Contract.BookmarkedEntry.TABLE_NAME + " (" +
+                Contract.BookmarkedEntry._ID + " STRING PRIMARY KEY, " +
+                Contract.BookmarkedEntry.NAME + " STRING NOT NULL, "+
+                Contract.BookmarkedEntry.PUBLISHER + " STRING NOT NULL,"+
+                Contract.BookmarkedEntry.SOURCE_URL + " STRING NOT NULL,"+
+                Contract.BookmarkedEntry.IMAGE_URL + " STRING NOT NULL);";
 
-        sqLiteDatabase.execSQL(SQL_CREATE_FAVOURITES_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_BOOKMARKED_TABLE);
 
         final String SQL_CREATE_RECIPES_TABLE = "CREATE TABLE " + Contract.RecipeEntry.TABLE_NAME + " (" +
-                Contract.RecipeEntry._ID + " STRING PRIMARY KEY," +
-                Contract.RecipeEntry.NAME + " STRING NOT NULL);";
+                Contract.RecipeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                Contract.RecipeEntry.NAME + " STRING NOT NULL, "+
+                Contract.RecipeEntry.PREPARE_TIME + " DOUBLE NOT NULL, "+
+                Contract.RecipeEntry.NUMBER_OF_SERVINGS + " INTEGER NOT NULL, "+
+                Contract.RecipeEntry.INGREDIENTS + " STRING, "+
+                Contract.RecipeEntry.DIRECTIONS + " STRING);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_RECIPES_TABLE);
     }
@@ -57,20 +59,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // It does NOT depend on the version number for your application.
         // If you want to update the schema without wiping data, commenting out the next 2 lines
         // should be your top priority before modifying this method.
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Contract.FavouriteEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Contract.BookmarkedEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Contract.RecipeEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 
-    public ArrayList<Recipe> getFavourites()
+    public ArrayList<Recipe> getBookmarkedRecipes()
     {
         Cursor cursor = mContext.getContentResolver().query(
-                Contract.FavouriteEntry.CONTENT_URI,
-                new String[]{Contract.FavouriteEntry._ID,
-                        Contract.FavouriteEntry.NAME,
-                Contract.FavouriteEntry.PUBLISHER,
-                Contract.FavouriteEntry.SOURCE_URL,
-                Contract.FavouriteEntry.IMAGE_URL},
+                Contract.BookmarkedEntry.CONTENT_URI,
+                new String[]{Contract.BookmarkedEntry._ID,
+                        Contract.BookmarkedEntry.NAME,
+                Contract.BookmarkedEntry.PUBLISHER,
+                SOURCE_URL,
+                Contract.BookmarkedEntry.IMAGE_URL},
                 null,
                 null,
                 null);
@@ -80,24 +82,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return arr;
         while (cursor.moveToNext())
         {
-            String _ID = cursor.getString(cursor.getColumnIndex(Contract.FavouriteEntry._ID)),
-              NAME = cursor.getString(cursor.getColumnIndex(Contract.FavouriteEntry.NAME)),
-                    PUBLISHER = cursor.getString(cursor.getColumnIndex(Contract.FavouriteEntry.PUBLISHER)),
-                    SOURCE_URL = cursor.getString(cursor.getColumnIndex(Contract.FavouriteEntry.SOURCE_URL)),
-                    IMAGE_URL = cursor.getString(cursor.getColumnIndex(Contract.FavouriteEntry.IMAGE_URL));
+            String _ID = cursor.getString(cursor.getColumnIndex(Contract.BookmarkedEntry._ID)),
+              NAME = cursor.getString(cursor.getColumnIndex(Contract.BookmarkedEntry.NAME)),
+                    PUBLISHER = cursor.getString(cursor.getColumnIndex(Contract.BookmarkedEntry.PUBLISHER)),
+                    SOURCE_URL = cursor.getString(cursor.getColumnIndex(Contract.BookmarkedEntry.SOURCE_URL)),
+                    IMAGE_URL = cursor.getString(cursor.getColumnIndex(Contract.BookmarkedEntry.IMAGE_URL));
             recipe = new Recipe(PUBLISHER, NAME, SOURCE_URL, IMAGE_URL, _ID);
             arr.add(recipe);
         }
         return arr;
     }
 
-    public boolean exists(String recipename)
+    public boolean favExists(String recipe_name)
     {
         Cursor cursor = mContext.getContentResolver().query(
-                Contract.FavouriteEntry.CONTENT_URI,
-                new String[]{Contract.FavouriteEntry._ID},
-                Contract.FavouriteEntry.NAME + " = ?",
-                new String[]{recipename},
+                Contract.BookmarkedEntry.CONTENT_URI,
+                new String[]{Contract.BookmarkedEntry._ID},
+                Contract.BookmarkedEntry.NAME + " = ?",
+                new String[]{recipe_name},
                 null);
         if(null == cursor | cursor.getCount()==0)
             return false;
@@ -105,47 +107,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
     }
 
-    public long addFavourite(Recipe recipe)
+    public long addBookmarkedRecipe(Recipe recipe)
     {
-        long favId = -1;
+        long id = -1;
         // First, check if recipe is already in fav.
         Cursor cursor = mContext.getContentResolver().query(
-                Contract.FavouriteEntry.CONTENT_URI,
-                new String[]{Contract.FavouriteEntry._ID},
-                Contract.FavouriteEntry.NAME + " = ?",
+                Contract.BookmarkedEntry.CONTENT_URI,
+                new String[]{Contract.BookmarkedEntry._ID},
+                Contract.BookmarkedEntry.NAME + " = ?",
                 new String[]{recipe.getTitle()},
                 null);
 
         if(null == cursor | cursor.getCount()==0)
         {
-            Log.d(LOG_TAG,"Recipe"+ recipe.getTitle() +" not in fav");
+            Log.d(LOG_TAG,"Recipe"+ recipe.getTitle() +" not in bookmarked");
             ContentValues values = new ContentValues();
-            values.put(Contract.FavouriteEntry._ID,recipe.get_ID());
-            values.put(Contract.FavouriteEntry.NAME,recipe.getTitle());
-            values.put(Contract.FavouriteEntry.PUBLISHER,recipe.getPublisher());
-            values.put(Contract.FavouriteEntry.SOURCE_URL,recipe.getSourceURL());
-            values.put(Contract.FavouriteEntry.IMAGE_URL,recipe.getImageURL());
+            values.put(Contract.BookmarkedEntry._ID,recipe.get_ID());
+            values.put(Contract.BookmarkedEntry.NAME,recipe.getTitle());
+            values.put(Contract.BookmarkedEntry.PUBLISHER,recipe.getPublisher());
+            values.put(Contract.BookmarkedEntry.SOURCE_URL,recipe.getSourceURL());
+            values.put(Contract.BookmarkedEntry.IMAGE_URL,recipe.getImageURL());
 
             Uri insertedUri = mContext.getContentResolver().insert(
-                    Contract.FavouriteEntry.CONTENT_URI,
+                    Contract.BookmarkedEntry.CONTENT_URI,
                     values
             );
-            favId = ContentUris.parseId(insertedUri);
-            Log.d(LOG_TAG,"Recipe inserted" + favId);
+            id = ContentUris.parseId(insertedUri);
+            Log.d(LOG_TAG,"Recipe inserted" + id);
         }
 
         cursor.close();
-        return favId;
+        return id;
     }
 
-    public boolean deleteFavourite(String recipename)
+    public boolean removeBookmarkedRecipe(String recipename)
     {
         int deletedRows = 0;
         // First, check if recipe is already in fav.
         Cursor cursor = mContext.getContentResolver().query(
-                Contract.FavouriteEntry.CONTENT_URI,
-                new String[]{Contract.FavouriteEntry._ID},
-                Contract.FavouriteEntry.NAME + " = ?",
+                Contract.BookmarkedEntry.CONTENT_URI,
+                new String[]{Contract.BookmarkedEntry._ID},
+                Contract.BookmarkedEntry.NAME + " = ?",
                 new String[]{recipename},
                 null);
 
@@ -153,20 +155,97 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
         else
         {
-            Log.d(LOG_TAG,"Recipe in fav");
+            Log.d(LOG_TAG,"Recipe in Bookamrked");
 
             deletedRows = mContext.getContentResolver().delete(
-                    Contract.FavouriteEntry.CONTENT_URI,
-                    Contract.FavouriteEntry.NAME + " = ?",
+                    Contract.BookmarkedEntry.CONTENT_URI,
+                    Contract.BookmarkedEntry.NAME + " = ?",
                     new String[]{recipename}
             );
-            Log.d(LOG_TAG,"Movie deleted" + deletedRows);
+            Log.d(LOG_TAG,"Recipe deleted" + deletedRows);
         }
 
         if(deletedRows>0)
             return true;
         else
             return false;
+    }
+
+    public Boolean addOwnRecipe(Recipe recipe){
+        ContentValues values = new ContentValues();
+        values.put(Contract.RecipeEntry.NAME,recipe.getTitle());
+        values.put(Contract.RecipeEntry.PREPARE_TIME,recipe.getTime());
+        values.put(Contract.RecipeEntry.NUMBER_OF_SERVINGS,recipe.getNumServings());
+        values.put(Contract.RecipeEntry.INGREDIENTS,recipe.getIngredients());
+        values.put(Contract.RecipeEntry.DIRECTIONS,recipe.getDirections());
+
+        Uri insertedUri = mContext.getContentResolver().insert(
+                Contract.RecipeEntry.CONTENT_URI,
+                values
+        );
+        Long id = ContentUris.parseId(insertedUri);
+        if(id>0)
+            return true;
+        else
+            return false;
+    }
+
+    public Boolean removeOwnRecipe(Recipe recipe){
+        int deletedRows = mContext.getContentResolver().delete(
+                Contract.RecipeEntry.CONTENT_URI,
+                Contract.RecipeEntry.NAME + " = ?",
+                new String[]{recipe.getTitle()}
+        );
+
+        if(deletedRows>0)
+            return true;
+        else
+            return false;
+    }
+
+    public ArrayList<Recipe> getOwnRecipes()
+    {
+        Cursor cursor = mContext.getContentResolver().query(
+                Contract.BookmarkedEntry.CONTENT_URI,
+                new String[]{Contract.RecipeEntry._ID,
+                        Contract.RecipeEntry.NAME,
+                        Contract.RecipeEntry.PREPARE_TIME,
+                        Contract.RecipeEntry.NUMBER_OF_SERVINGS,
+                        Contract.RecipeEntry.INGREDIENTS,
+                        Contract.RecipeEntry.DIRECTIONS},
+                null,
+                null,
+                null);
+        ArrayList<Recipe> arr = new ArrayList<>();
+        Recipe recipe;
+        if(null == cursor | cursor.getCount()==0)
+            return arr;
+        while (cursor.moveToNext())
+        {
+            String _ID = cursor.getString(cursor.getColumnIndex(Contract.RecipeEntry._ID)),
+                    NAME = cursor.getString(cursor.getColumnIndex(Contract.RecipeEntry.NAME)),
+                    INGREDIENTS = cursor.getString(cursor.getColumnIndex(Contract.RecipeEntry.INGREDIENTS)),
+                    DIRECTIONS = cursor.getString(cursor.getColumnIndex(Contract.RecipeEntry.DIRECTIONS));
+            Double PREPARE_TIME = cursor.getDouble(cursor.getColumnIndex(Contract.RecipeEntry.PREPARE_TIME));
+            Integer NUMBER_OF_SERVINGS = cursor.getInt(cursor.getColumnIndex(Contract.RecipeEntry.NUMBER_OF_SERVINGS));
+            recipe = new Recipe(_ID, NAME, PREPARE_TIME, NUMBER_OF_SERVINGS, INGREDIENTS,DIRECTIONS);
+            arr.add(recipe);
+        }
+        return arr;
+    }
+
+    public boolean recipeExists(String recipename)
+    {
+        Cursor cursor = mContext.getContentResolver().query(
+                Contract.RecipeEntry.CONTENT_URI,
+                new String[]{Contract.RecipeEntry._ID},
+                Contract.RecipeEntry.NAME + " = ?",
+                new String[]{recipename},
+                null);
+        if(null == cursor | cursor.getCount()==0)
+            return false;
+        else
+            return true;
     }
 
 
