@@ -1,7 +1,6 @@
 package com.example.android.recipebook.app;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity
 //                startActivity(intent);
                 NewRecipeFragment f = new NewRecipeFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main,f).commit();
-
 
             }
         });
@@ -89,7 +87,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_fav)
+        if (id == R.id.nav_bk)
         {
             RecipesFragment fragment = (RecipesFragment)getSupportFragmentManager().findFragmentByTag("recipesFragment");
             if(fragment!=null && fragment.isVisible()){
@@ -99,7 +97,13 @@ public class MainActivity extends AppCompatActivity
                 fragment.getActivity().setTitle("Bookmarked");
             }
         } else if (id == R.id.nav_my_own) {
-
+            RecipesFragment fragment = (RecipesFragment)getSupportFragmentManager().findFragmentByTag("recipesFragment");
+            if(fragment!=null && fragment.isVisible()){
+                Boolean s = fragment.getOwn();
+                if(!s)
+                    Toast.makeText(fragment.getContext(),"You have not added any recipes of your own!", Toast.LENGTH_LONG).show();
+                fragment.getActivity().setTitle("My recipes");
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

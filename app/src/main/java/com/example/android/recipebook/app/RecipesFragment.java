@@ -88,9 +88,25 @@ public class RecipesFragment extends Fragment implements SearchView.OnQueryTextL
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                            String path = ((Recipe) mAdapter.getItem(i)).getSourceURL();
-                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(path));
-                                            startActivity(Intent.createChooser(browserIntent, null));
+                                            if(mAdapter.own){
+                                                NewRecipeDetailsFragment f = new NewRecipeDetailsFragment();
+                                                Bundle args = new Bundle();
+                                                Recipe recipe = ((Recipe) mAdapter.getItem(i));
+                                                args.putString("id",recipe.get_ID());
+                                                args.putString("name",recipe.getName());
+                                                args.putString("time",recipe.getTime());
+                                                args.putInt("numServings",recipe.getNumServings());
+                                                args.putString("ingredients",recipe.getIngredients());
+                                                args.putString("directions",recipe.getDirections());
+                                                f.setArguments(args);
+                                                mAdapter.own = false;
+                                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_main,f).commit();
+                                            }
+                                            else{
+                                                String path = ((Recipe) mAdapter.getItem(i)).getSourceURL();
+                                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(path));
+                                                startActivity(Intent.createChooser(browserIntent, null));
+                                            }
                                         }
                                     });
         mAdapter = new MyRecipesAdapter(getActivity(),temp);
@@ -151,6 +167,11 @@ public class RecipesFragment extends Fragment implements SearchView.OnQueryTextL
         return status;
     }
 
+    public Boolean getOwn(){
+        Boolean status = mAdapter.showOwn();
+        return status;
+    }
+
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
@@ -164,7 +185,6 @@ public class RecipesFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     public void searchRecipe(String url) {
-
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,
                 url,
                 null,

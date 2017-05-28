@@ -26,10 +26,14 @@ public class NewRecipeFragment extends Fragment {
 
     public NewRecipeFragment()
     {
-        db = new DatabaseHelper(getContext());
-        setHasOptionsMenu(true);
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        db = new DatabaseHelper(getContext());
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,15 +57,26 @@ public class NewRecipeFragment extends Fragment {
                 Recipe recipe = new Recipe(
                         null,
                         recipeName.getText().toString(),
-                        Double.parseDouble(preparationTime.getText().toString()),
+                        preparationTime.getText().toString(),
                         Integer.parseInt(numberOfServings.getText().toString()),
                         ingredients.getText().toString(),
                         directions.getText().toString()
                 );
-                if(db.addOwnRecipe(recipe))
+                if(db.addOwnRecipe(recipe)){
                     Toast.makeText(getContext(),"Recipe saved successfully!",Toast.LENGTH_LONG).show();
+                    NewRecipeDetailsFragment f = new NewRecipeDetailsFragment();
+                    Bundle args = new Bundle();
+                    args.putString("id",recipe.get_ID());
+                    args.putString("name",recipe.getName());
+                    args.putString("time",recipe.getTime());
+                    args.putInt("numServings",recipe.getNumServings());
+                    args.putString("ingredients",recipe.getIngredients());
+                    args.putString("directions",recipe.getDirections());
+                    f.setArguments(args);
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_main,f).commit();
+                }
                 else
-                    Toast.makeText(getContext(),"Something went wrong!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"Something went wrong! A recipe with the same name may already exist.",Toast.LENGTH_LONG).show();
 
                 return false;
             }

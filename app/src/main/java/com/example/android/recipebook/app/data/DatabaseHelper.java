@@ -19,7 +19,7 @@ import static com.example.android.recipebook.app.data.Contract.BookmarkedEntry.S
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private final Context mContext;
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
     private static String LOG_TAG = DatabaseHelper.class.getSimpleName();
 
     static final String DATABASE_NAME = "recipebook.db";
@@ -43,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_RECIPES_TABLE = "CREATE TABLE " + Contract.RecipeEntry.TABLE_NAME + " (" +
                 Contract.RecipeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 Contract.RecipeEntry.NAME + " STRING NOT NULL, "+
-                Contract.RecipeEntry.PREPARE_TIME + " DOUBLE NOT NULL, "+
+                Contract.RecipeEntry.PREPARE_TIME + " STRING NOT NULL, "+
                 Contract.RecipeEntry.NUMBER_OF_SERVINGS + " INTEGER NOT NULL, "+
                 Contract.RecipeEntry.INGREDIENTS + " STRING, "+
                 Contract.RecipeEntry.DIRECTIONS + " STRING);";
@@ -115,15 +115,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Contract.BookmarkedEntry.CONTENT_URI,
                 new String[]{Contract.BookmarkedEntry._ID},
                 Contract.BookmarkedEntry.NAME + " = ?",
-                new String[]{recipe.getTitle()},
+                new String[]{recipe.getName()},
                 null);
 
         if(null == cursor | cursor.getCount()==0)
         {
-            Log.d(LOG_TAG,"Recipe"+ recipe.getTitle() +" not in bookmarked");
+            Log.d(LOG_TAG,"Recipe"+ recipe.getName() +" not in bookmarked");
             ContentValues values = new ContentValues();
             values.put(Contract.BookmarkedEntry._ID,recipe.get_ID());
-            values.put(Contract.BookmarkedEntry.NAME,recipe.getTitle());
+            values.put(Contract.BookmarkedEntry.NAME,recipe.getName());
             values.put(Contract.BookmarkedEntry.PUBLISHER,recipe.getPublisher());
             values.put(Contract.BookmarkedEntry.SOURCE_URL,recipe.getSourceURL());
             values.put(Contract.BookmarkedEntry.IMAGE_URL,recipe.getImageURL());
@@ -172,8 +172,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Boolean addOwnRecipe(Recipe recipe){
+        String new_recipe_name = recipe.getName();
+        Boolean exists = recipeExists(new_recipe_name);
+        if(exists)
+            return false;
         ContentValues values = new ContentValues();
-        values.put(Contract.RecipeEntry.NAME,recipe.getTitle());
+        values.put(Contract.RecipeEntry.NAME,recipe.getName());
         values.put(Contract.RecipeEntry.PREPARE_TIME,recipe.getTime());
         values.put(Contract.RecipeEntry.NUMBER_OF_SERVINGS,recipe.getNumServings());
         values.put(Contract.RecipeEntry.INGREDIENTS,recipe.getIngredients());
@@ -194,7 +198,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int deletedRows = mContext.getContentResolver().delete(
                 Contract.RecipeEntry.CONTENT_URI,
                 Contract.RecipeEntry.NAME + " = ?",
-                new String[]{recipe.getTitle()}
+                new String[]{recipe.getName()}
         );
 
         if(deletedRows>0)
@@ -218,15 +222,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null);
         ArrayList<Recipe> arr = new ArrayList<>();
         Recipe recipe;
-        if(null == cursor | cursor.getCount()==0)
+        if(null == cursor)
+            return arr;
+        else if(cursor.getCount()==0)
             return arr;
         while (cursor.moveToNext())
         {
             String _ID = cursor.getString(cursor.getColumnIndex(Contract.RecipeEntry._ID)),
                     NAME = cursor.getString(cursor.getColumnIndex(Contract.RecipeEntry.NAME)),
                     INGREDIENTS = cursor.getString(cursor.getColumnIndex(Contract.RecipeEntry.INGREDIENTS)),
-                    DIRECTIONS = cursor.getString(cursor.getColumnIndex(Contract.RecipeEntry.DIRECTIONS));
-            Double PREPARE_TIME = cursor.getDouble(cursor.getColumnIndex(Contract.RecipeEntry.PREPARE_TIME));
+                    DIRECTIONS = cursor.getString(cursor.getColumnIndex(Contract.RecipeEntry.DIRECTIONS)),
+                    PREPARE_TIME = cursor.getString(cursor.getColumnIndex(Contract.RecipeEntry.PREPARE_TIME));
             Integer NUMBER_OF_SERVINGS = cursor.getInt(cursor.getColumnIndex(Contract.RecipeEntry.NUMBER_OF_SERVINGS));
             recipe = new Recipe(_ID, NAME, PREPARE_TIME, NUMBER_OF_SERVINGS, INGREDIENTS,DIRECTIONS);
             arr.add(recipe);
@@ -242,7 +248,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Contract.RecipeEntry.NAME + " = ?",
                 new String[]{recipename},
                 null);
-        if(null == cursor | cursor.getCount()==0)
+        if(null == cursor)
+            return false;
+        else if(cursor.getCount()==0)
             return false;
         else
             return true;

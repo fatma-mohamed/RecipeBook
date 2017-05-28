@@ -27,6 +27,7 @@ public class MyRecipesAdapter extends BaseAdapter implements Filterable{
     private Filter filter;
     private Button btnLoadExtra;
     private ArrayList<Recipe> values;
+    public Boolean own = false;
     private static final String LOG_TAG = MyRecipesAdapter.class.getSimpleName();
 
     public MyRecipesAdapter(Context context, ArrayList<Recipe> r) {
@@ -65,6 +66,16 @@ public class MyRecipesAdapter extends BaseAdapter implements Filterable{
         if(values.size()==0)
             return false;
         notifyDataSetChanged();
+        own = false;
+        return true;
+    }
+
+    public Boolean showOwn(){
+        values = db.getOwnRecipes();
+        if(values.size()==0)
+            return false;
+        own = true;
+        notifyDataSetChanged();
         return true;
     }
 
@@ -79,30 +90,35 @@ public class MyRecipesAdapter extends BaseAdapter implements Filterable{
         TextView recipeTitle = (TextView)item.findViewById(R.id.list_item_name);
         Typeface custom_font = Typeface.createFromAsset(item.getContext().getAssets(), "fonts/americanabt.ttf");
         recipeTitle.setTypeface(custom_font);
-        String path = values.get(position).getImageURL();
-        Utilities.setImage(item,recipeIcon,path);
-        recipeTitle.setText(values.get(position).getTitle());
-        final ImageButton bookmark_btn = (ImageButton)item.findViewById(R.id.btn_bookmark);
-        if(db.favExists(values.get(position).getTitle()))
-        {
-            bookmark_btn.setImageResource(R.drawable.ic_action_bookmarked);
-            btnClicked = true;
+        if(own){
+            recipeTitle.setText(values.get(position).getName());
         }
-        bookmark_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!btnClicked){
-                    bookmark_btn.setImageResource(R.drawable.ic_action_bookmarked);
-                    db.addBookmarkedRecipe(values.get(position));
-                    btnClicked = true;
-                }
-                else{
-                    bookmark_btn.setImageResource(R.drawable.ic_action_bookmark);
-                    db.removeBookmarkedRecipe(values.get(position).getTitle());
-                    btnClicked = false;
-                }
+        else{
+            String path = values.get(position).getImageURL();
+            Utilities.setImage(item,recipeIcon,path);
+            recipeTitle.setText(values.get(position).getName());
+            final ImageButton bookmark_btn = (ImageButton)item.findViewById(R.id.btn_bookmark);
+            if(db.favExists(values.get(position).getName()))
+            {
+                bookmark_btn.setImageResource(R.drawable.ic_action_bookmarked);
+                btnClicked = true;
             }
-        });
+            bookmark_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(!btnClicked){
+                        bookmark_btn.setImageResource(R.drawable.ic_action_bookmarked);
+                        db.addBookmarkedRecipe(values.get(position));
+                        btnClicked = true;
+                    }
+                    else{
+                        bookmark_btn.setImageResource(R.drawable.ic_action_bookmark);
+                        db.removeBookmarkedRecipe(values.get(position).getName());
+                        btnClicked = false;
+                    }
+                }
+            });
+        }
         return item;
     }
 
@@ -122,7 +138,7 @@ public class MyRecipesAdapter extends BaseAdapter implements Filterable{
             if(constraint!=null && constraint.length()>0){
                 ArrayList<Recipe> results = new ArrayList<>();
                 for(Recipe recipe:values){
-                    if(recipe.getTitle().toLowerCase().contains(constraint.toString().toLowerCase()))
+                    if(recipe.getName().toLowerCase().contains(constraint.toString().toLowerCase()))
                         results.add(recipe);
                 }
                 filterResults.count = results.size();

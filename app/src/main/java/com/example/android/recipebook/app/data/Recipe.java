@@ -1,8 +1,6 @@
 package com.example.android.recipebook.app.data;
 
 
-import java.util.ArrayList;
-
 /**
  * Created by Fatma on 08-Jan-17.
  */
@@ -10,10 +8,10 @@ import java.util.ArrayList;
 public class Recipe {
     private String _ID = null;
     private String publisher;
-    private String title;
+    private String name;
     private String sourceURL;
     private String imageURL;
-    private Double time;
+    private String time;
     private Integer numServings;
     private String ingredients;
     private String directions;
@@ -21,7 +19,7 @@ public class Recipe {
     public Recipe(String _publisher, String _title,  String source_url, String image_url,  String id)
     {
         _ID = id;
-        title = _title;
+        name = _title;
         publisher = _publisher;
         sourceURL = source_url;
         imageURL = image_url;
@@ -31,10 +29,10 @@ public class Recipe {
         directions = null;
     }
 
-    public Recipe(String id, String _title,  Double t, Integer n, String i, String d)
+    public Recipe(String id, String _title,  String t, Integer n, String i, String d)
     {
         _ID = id;
-        title = _title;
+        name = _title;
         publisher = null;
         sourceURL = null;
         imageURL = null;
@@ -52,8 +50,8 @@ public class Recipe {
         return publisher;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
     public String getSourceURL() {
@@ -64,7 +62,7 @@ public class Recipe {
         return imageURL;
     }
 
-    public Double getTime() {
+    public String getTime() {
         return time;
     }
 
