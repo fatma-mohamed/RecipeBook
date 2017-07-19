@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorHint">#A4A4A4</color>
-    <color name="colorInput">#1C1C1C</color>
 
+    <color name="colorInput">#1C1C1C</color>
     <!--My Palette-->
     <color name="darkPrimaryColor">#0097A7</color>
     <color name="defaultPrimaryColor">#00BCD4</color>
     <color name="lightPrimaryColor">#B2EBF2</color>
-    <color name="textPrimaryColor">#FFFFFF</color>
+    <!--color name="textPrimaryColor">#FFFFFF</color-->
     <color name="accentColor">#CDDC39</color>
-    <color name="primaryTextColor">#212121</color>
+    <color name="primaryTextColor">#FFFF</color>
     <color name="secondaryTextColor">#757575</color>
     <color name="dividerColor">#BDBDBD</color>
 </resources>

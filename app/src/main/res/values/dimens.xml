@@ -9,6 +9,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="list_divider">5dp</dimen>
+    <dimen name="line_divider_top">25dp</dimen>
+    <dimen name="line_divider_bottom">15dp</dimen>
     <dimen name="list_item_padding_vertical">20dp</dimen>
     <dimen name="list_item_padding_horizontal">10dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->

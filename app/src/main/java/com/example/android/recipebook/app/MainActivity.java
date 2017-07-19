@@ -4,6 +4,7 @@ package com.example.android.recipebook.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
+
+import static android.R.attr.fragment;
 
 
 public class MainActivity extends AppCompatActivity
@@ -40,14 +43,28 @@ public class MainActivity extends AppCompatActivity
             });
         }
         else {
-
             setContentView(R.layout.activity_main);
-            RecipesFragment recipesFragment = new RecipesFragment();
-            if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.content_main, recipesFragment, "recipesFragment")
-                        .addToBackStack("recipesFragment")
-                        .commit();}
+            Boolean isOwn = getIntent().getBooleanExtra("isOwn", false);
+            if(isOwn) {
+                RecipesFragment recipesFragment = new RecipesFragment();
+                if (savedInstanceState == null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.content_main, recipesFragment, "RecipesFragment")
+                            .commitNow();
+                }
+                RecipesFragment fragment = (RecipesFragment)getSupportFragmentManager().findFragmentByTag("RecipesFragment");
+                Boolean s = fragment.getOwn();
+                if(!s)
+                    Toast.makeText(fragment.getContext(),"You have not added any recipes of your own!", Toast.LENGTH_LONG).show();
+                fragment.getActivity().setTitle("My recipes");
+            }
+            else{
+                RecipesFragment recipesFragment = new RecipesFragment();
+                if (savedInstanceState == null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.content_main, recipesFragment, "RecipesFragment")
+                            .commit();}
+            }
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
@@ -55,11 +72,11 @@ public class MainActivity extends AppCompatActivity
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, NewRecipeActivity.class);
-//                startActivity(intent);
                     NewRecipeFragment f = new NewRecipeFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main,f)
-                            .addToBackStack("newRecipeFragment").commit();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.content_main,f,"NewRecipeFragment")
+                            .addToBackStack("MainActivity")
+                            .commit();
 
                 }
             });
@@ -72,7 +89,6 @@ public class MainActivity extends AppCompatActivity
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
-
             // SyncAdapter.initializeSyncAdapter(this);
         }
     }
@@ -83,7 +99,12 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            int count = getSupportFragmentManager().getBackStackEntryCount();
+            if (count == 0) {
+                finish();
+            } else {
+                getSupportFragmentManager().popBackStack();
+            }
         }
     }
 
@@ -96,9 +117,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -113,7 +131,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_bk)
         {
-            RecipesFragment fragment = (RecipesFragment)getSupportFragmentManager().findFragmentByTag("recipesFragment");
+            RecipesFragment fragment = (RecipesFragment)getSupportFragmentManager().findFragmentByTag("RecipesFragment");
             if(fragment!=null && fragment.isVisible()){
                 Boolean s = fragment.getBookmarked();
                 if(!s)
@@ -121,19 +139,19 @@ public class MainActivity extends AppCompatActivity
                 fragment.getActivity().setTitle("Bookmarked");
             }
         } else if (id == R.id.nav_my_own) {
-            RecipesFragment fragment = (RecipesFragment)getSupportFragmentManager().findFragmentByTag("recipesFragment");
+            RecipesFragment fragment = (RecipesFragment)getSupportFragmentManager().findFragmentByTag("RecipesFragment");
             if(fragment!=null && fragment.isVisible()){
                 Boolean s = fragment.getOwn();
                 if(!s)
                     Toast.makeText(fragment.getContext(),"You have not added any recipes of your own!", Toast.LENGTH_LONG).show();
                 fragment.getActivity().setTitle("My recipes");
             }
+        } else if (id == R.id.nav_all){
+            this.recreate();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 }

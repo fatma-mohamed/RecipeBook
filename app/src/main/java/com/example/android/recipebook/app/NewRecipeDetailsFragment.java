@@ -1,5 +1,6 @@
 package com.example.android.recipebook.app;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 import com.example.android.recipebook.app.data.DatabaseHelper;
 import com.example.android.recipebook.app.data.Recipe;
 
+import static com.example.android.recipebook.app.R.id.ingredients;
+
 /**
  * Created by Fatma on 08-Jan-17.
  */
@@ -26,17 +29,12 @@ public class NewRecipeDetailsFragment extends Fragment {
     private DatabaseHelper db;
     private Bundle recipe;
 
-
-    public NewRecipeDetailsFragment()
-    {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         recipe = getArguments();
         setHasOptionsMenu(true);
-        db = new DatabaseHelper(getContext());
+        db = RecipesFragment.db;
     }
 
     @Override
@@ -47,7 +45,11 @@ public class NewRecipeDetailsFragment extends Fragment {
         TextView preparation_time = (TextView)rootView.findViewById(R.id.time);
         preparation_time.setText(recipe.getString("time"));
         TextView num_servings = (TextView)rootView.findViewById(R.id.numServings);
-        num_servings.setText(recipe.getString("numServings"));
+        String num_serv = String.valueOf(recipe.getInt("numServings"));
+        if (num_serv.equals("0"))
+            num_servings.setText("");
+        else
+            num_servings.setText(num_serv);
         TextView ingredients = (TextView)rootView.findViewById(R.id.ingredients);
         ingredients.setText(recipe.getString("ingredients"));
         TextView directions = (TextView)rootView.findViewById(R.id.directions);
@@ -69,11 +71,11 @@ public class NewRecipeDetailsFragment extends Fragment {
                         recipe.getString("ingredients"),
                         recipe.getString("directions"));
                 if(db.removeOwnRecipe(new_recipe)){
-                    Toast.makeText(getContext(),"Recipe deleted!",Toast.LENGTH_LONG).show();
-                    getActivity().finish();
+                    Toast.makeText(getContext(),"Recipe deleted!",Toast.LENGTH_SHORT).show();
+                    getActivity().onBackPressed();
                 }
                 else
-                    Toast.makeText(getContext(),"Something went wrong!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"Something went wrong!",Toast.LENGTH_SHORT).show();
 
                 return false;
             }

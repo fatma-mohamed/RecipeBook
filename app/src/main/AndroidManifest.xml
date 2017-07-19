@@ -3,6 +3,7 @@
     package="com.example.android.recipebook.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Permissions required by the sync adapter -->
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
@@ -34,7 +35,8 @@
         </activity>
 
         <activity
-            android:name=".NewRecipeActivity"
+            android:name=".OwnRecipeDetailsActivity"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/Cyan_Lime.">
         </activity>
 

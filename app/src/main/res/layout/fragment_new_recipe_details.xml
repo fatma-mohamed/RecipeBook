@@ -19,7 +19,8 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:padding="10dp"
-            android:layout_marginTop="7dp">
+            android:layout_marginTop="7dp"
+            android:background="@color/primaryTextColor">
 
             <TextView
                 android:id="@+id/label_time"
@@ -46,7 +47,8 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:padding="10dp"
-            android:layout_marginTop="7dp">
+            android:layout_marginTop="7dp"
+            android:background="@color/primaryTextColor">
 
             <TextView
                 android:id="@+id/label_numServings"
@@ -73,11 +75,12 @@
             android:text="Ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorHint"
+            android:textColorHint="@color/secondaryTextColor"
             android:padding="10dp"
             android:layout_marginTop="13dp"
             android:textSize="@dimen/text_label"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:background="@color/primaryTextColor"/>
 
         <TextView
             android:id="@+id/ingredients"
@@ -87,19 +90,21 @@
             android:paddingBottom="@dimen/list_item_padding_vertical"
             android:textColor="@color/colorInput"
             android:ems="10"
-            android:textSize="@dimen/text_input"/>
+            android:textSize="@dimen/text_input"
+            android:background="@color/primaryTextColor"/>
 
         <TextView
             android:id="@+id/label_directions"
             android:text="Directions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorHint"
+            android:textColorHint="@color/secondaryTextColor"
             android:paddingTop="@dimen/list_item_padding_vertical"
             android:padding="10dp"
             android:layout_marginTop="13dp"
             android:textSize="@dimen/text_label"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:background="@color/primaryTextColor"/>
 
         <TextView
             android:id="@+id/directions"
@@ -108,7 +113,8 @@
             android:padding="10dp"
             android:textColor="@color/colorInput"
             android:ems="10"
-            android:textSize="@dimen/text_input"/>
+            android:textSize="@dimen/text_input"
+            android:background="@color/primaryTextColor"/>
 
     </LinearLayout>
 

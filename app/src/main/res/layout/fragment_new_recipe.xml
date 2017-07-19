@@ -19,9 +19,11 @@
             android:padding="10dp"
             android:layout_margin="10dp"
             android:layout_marginTop="7dp"
+            android:layout_marginBottom="17dp"
             android:hint="Recipe name"
             android:textAlignment="center"
-            android:textColorHint="@color/colorHint"
+            android:inputType="textCapCharacters"
+            android:textColorHint="@color/secondaryTextColor"
             android:textColor="@color/secondaryTextColor"
             android:textSize="@dimen/text_input"
             android:textStyle="bold"/>
@@ -45,8 +47,10 @@
             <EditText
                 android:id="@+id/time"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:background="@color/defaultPrimaryColor"
                 android:inputType="time"
                 android:textColor="@color/colorInput"
                 android:textSize="@dimen/text_input"
@@ -64,7 +68,7 @@
 
             <TextView
                 android:id="@+id/label_numServings"
-                android:text="Number of servings"
+                android:text="Number\nof servings   "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_label"
@@ -73,8 +77,10 @@
             <EditText
                 android:id="@+id/numServings"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:background="@color/defaultPrimaryColor"
                 android:textColor="@color/colorInput"
                 android:textSize="@dimen/text_input"
                 android:textAlignment="center"
@@ -83,15 +89,25 @@
         </LinearLayout>
 
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.5dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="@dimen/line_divider_bottom"
+            android:layout_marginLeft="@dimen/list_divider"
+            android:layout_marginRight="@dimen/list_divider"
+            android:background="@color/defaultPrimaryColor"/>
+
+
 
         <TextView
             android:id="@+id/label_ingredients"
             android:text="Ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorHint"
-            android:padding="10dp"
-            android:layout_marginTop="13dp"
+            android:textColorHint="@color/secondaryTextColor"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="@dimen/line_divider_top"
             android:textSize="@dimen/text_label"
             android:textStyle="bold"/>
 
@@ -99,22 +115,30 @@
             android:id="@+id/ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:paddingBottom="@dimen/list_item_padding_vertical"
+            android:paddingLeft="10dp"
+            android:layout_marginBottom="@dimen/line_divider_bottom"
             android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
             android:textColor="@color/colorInput"
             android:ems="10"
             android:textSize="@dimen/text_input"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.5dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="@dimen/line_divider_bottom"
+            android:layout_marginLeft="@dimen/list_divider"
+            android:layout_marginRight="@dimen/list_divider"
+            android:background="@color/defaultPrimaryColor"/>
 
         <TextView
             android:id="@+id/label_directions"
             android:text="Directions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorHint"
-            android:paddingTop="@dimen/list_item_padding_vertical"
-            android:padding="10dp"
-            android:layout_marginTop="7dp"
+            android:textColorHint="@color/secondaryTextColor"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="@dimen/line_divider_top"
             android:textSize="@dimen/text_label"
             android:textStyle="bold"/>
 
@@ -122,7 +146,7 @@
             android:id="@+id/directions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingLeft="10dp"
             android:singleLine="true"
             android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
             android:textColor="@color/colorInput"
