@@ -1,6 +1,8 @@
 package com.example.android.recipebook.app;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 
 import com.example.android.recipebook.app.data.DatabaseHelper;
 import com.example.android.recipebook.app.data.Recipe;
+
+import java.util.List;
 
 /**
  * Created by Fatma on 08-Jan-17.
@@ -32,12 +36,14 @@ public class NewRecipeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        db = new DatabaseHelper(getContext());
+        db = RecipesFragment.db;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_new_recipe, container, false);
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.addRecipe);
+        fab.setVisibility(View.INVISIBLE);
         getActivity().setTitle("New recipe");
         return rootView;
     }
@@ -54,30 +60,58 @@ public class NewRecipeFragment extends Fragment {
                         numberOfServings = (EditText)rootView.findViewById(R.id.numServings),
                         ingredients = (EditText)rootView.findViewById(R.id.ingredients),
                         directions = (EditText)rootView.findViewById(R.id.directions);
-                Recipe recipe = new Recipe(
-                        null,
-                        recipeName.getText().toString(),
-                        preparationTime.getText().toString(),
-                        Integer.parseInt(numberOfServings.getText().toString()),
-                        ingredients.getText().toString(),
-                        directions.getText().toString()
-                );
-                if(db.addOwnRecipe(recipe)){
-                    Toast.makeText(getContext(),"Recipe saved successfully!",Toast.LENGTH_LONG).show();
-                    NewRecipeDetailsFragment f = new NewRecipeDetailsFragment();
-                    Bundle args = new Bundle();
-                    args.putString("id",recipe.get_ID());
-                    args.putString("name",recipe.getName());
-                    args.putString("time",recipe.getTime());
-                    args.putInt("numServings",recipe.getNumServings());
-                    args.putString("ingredients",recipe.getIngredients());
-                    args.putString("directions",recipe.getDirections());
-                    f.setArguments(args);
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_main,f).commit();
+                String recipe_name = "", preparation_time = "",
+                ing = "", directn = "";
+                Integer number_of_servings;
+                if(recipeName.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "A recipe must have a name.", Toast.LENGTH_SHORT).show();
+                    return false;
                 }
                 else
-                    Toast.makeText(getContext(),"Something went wrong! A recipe with the same name may already exist.",Toast.LENGTH_LONG).show();
+                    recipe_name = recipeName.getText().toString();
+                if(ingredients.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "It can't be a recipe without ingredients.", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                else
+                    ing = ingredients.getText().toString();
+                if(directions.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Directions are important!", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                else
+                    directn = directions.getText().toString();
+                if(preparationTime.getText().toString().equals(""))
+                  preparation_time = null;
+                else
+                    preparation_time = preparationTime.getText().toString();
+                if(numberOfServings.getText().toString().equals(""))
+                    number_of_servings = 0;
+                else
+                    number_of_servings = Integer.parseInt(numberOfServings.getText().toString());
 
+                Recipe recipe = new Recipe(
+                        null,
+                        recipe_name,
+                        preparation_time,
+                        number_of_servings,
+                        ing,
+                        directn
+                );
+                if(db.addOwnRecipe(recipe)){
+                    Toast.makeText(getContext(),"Recipe saved successfully!",Toast.LENGTH_SHORT).show();
+                    //Will not add NewRecipeFragment to the back_stack so when back is pressed, don't return to it
+                    Intent intent = new Intent(getActivity(), OwnRecipeDetailsActivity.class);
+                    intent.putExtra("id",recipe.get_ID());
+                    intent.putExtra("name",recipe.getName());
+                    intent.putExtra("time",recipe.getTime());
+                    intent.putExtra("numServings",recipe.getNumServings());
+                    intent.putExtra("ingredients",recipe.getIngredients());
+                    intent.putExtra("directions",recipe.getDirections());
+                    startActivity(intent);
+                }
+                else
+                    Toast.makeText(getContext(),"Something went wrong! A recipe with the same name may already exist.",Toast.LENGTH_SHORT).show();
                 return false;
             }
         });

@@ -12,6 +12,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField('String', 'RECIPE_API_KEY', FOOD2FORK_API_KEY)
+        buildConfigField('String', 'INSTABUG_API_KEY', INSTABUG_API_KEY)
     }
     buildTypes {
         release {
@@ -34,15 +35,14 @@ dependencies {
 
     //Volley
     //Picasso
-    //ButterKnife
+    //Instabug
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:support-v4:25.1.0'
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
-    compile 'com.mcxiaoke.volley:library-aar:1.0.0'
+    compile 'com.instabug.library:instabug:4.2.5'
+  //  compile 'com.android.volley:volley:1.0.0' //another library already calls volley
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.jakewharton:butterknife:8.5.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
     testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

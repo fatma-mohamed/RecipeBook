@@ -17,7 +17,11 @@ import android.widget.TextView;
 import com.example.android.recipebook.app.data.DatabaseHelper;
 import com.example.android.recipebook.app.data.Recipe;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 
 public class MyRecipesAdapter extends BaseAdapter implements Filterable{
@@ -86,6 +90,10 @@ public class MyRecipesAdapter extends BaseAdapter implements Filterable{
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View item = inflater.inflate(R.layout.list_item_recipe,null);
+        if(own){
+            ImageButton btn = (ImageButton)item.findViewById(R.id.btn_bookmark);
+            btn.setVisibility(View.INVISIBLE);
+        }
         ImageView recipeIcon = (ImageView)item.findViewById(R.id.list_item_icon);
         TextView recipeTitle = (TextView)item.findViewById(R.id.list_item_name);
         Typeface custom_font = Typeface.createFromAsset(item.getContext().getAssets(), "fonts/americanabt.ttf");
@@ -98,7 +106,7 @@ public class MyRecipesAdapter extends BaseAdapter implements Filterable{
             Utilities.setImage(item,recipeIcon,path);
             recipeTitle.setText(values.get(position).getName());
             final ImageButton bookmark_btn = (ImageButton)item.findViewById(R.id.btn_bookmark);
-            if(db.favExists(values.get(position).getName()))
+            if(db.bookmarkedExists(values.get(position).getName()))
             {
                 bookmark_btn.setImageResource(R.drawable.ic_action_bookmarked);
                 btnClicked = true;
@@ -157,8 +165,6 @@ public class MyRecipesAdapter extends BaseAdapter implements Filterable{
             notifyDataSetChanged();
         }
     }
-
-
 }
 
 

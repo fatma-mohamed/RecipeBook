@@ -3,6 +3,8 @@ package com.example.android.recipebook.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.design.*;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -15,6 +17,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.instabug.library.Instabug;
+import com.instabug.library.invocation.InstabugInvocationEvent;
 
 import static android.R.attr.fragment;
 
@@ -31,39 +36,48 @@ public class MainActivity extends AppCompatActivity
 
         if(!con.isOnline(this))
         {
-            Toast.makeText(this, "No internet connection!", Toast.LENGTH_LONG);
+            //Toast.makeText(this, "No internet connection!", Toast.LENGTH_SHORT).show();
             setContentView(R.layout.activity_no_internet);
             Button try_again_btn = (Button)findViewById(R.id.try_again_btn);
             try_again_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent t= new Intent(MainActivity.this,MainActivity.class);
-                    startActivity(t);
+                    Intent intent= new Intent(MainActivity.this,MainActivity.class);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
             });
         }
         else {
             setContentView(R.layout.activity_main);
+            //Instabug feedback
+            new Instabug.Builder(this.getApplication(), BuildConfig.INSTABUG_API_KEY)
+                    .setInvocationEvent(InstabugInvocationEvent.SHAKE)
+                    .build();
+            this.getIntent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             Boolean isOwn = getIntent().getBooleanExtra("isOwn", false);
             if(isOwn) {
+                getIntent().putExtra("isOwn", false);
+                Bundle args = new Bundle();
+                args.putBoolean("isOwn", true);
                 RecipesFragment recipesFragment = new RecipesFragment();
+                recipesFragment.setArguments(args);
                 if (savedInstanceState == null) {
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.content_main, recipesFragment, "RecipesFragment")
                             .commitNow();
                 }
                 RecipesFragment fragment = (RecipesFragment)getSupportFragmentManager().findFragmentByTag("RecipesFragment");
-                Boolean s = fragment.getOwn();
-                if(!s)
-                    Toast.makeText(fragment.getContext(),"You have not added any recipes of your own!", Toast.LENGTH_LONG).show();
                 fragment.getActivity().setTitle("My recipes");
             }
             else{
+                Bundle args = new Bundle();
+                args.putBoolean("isOwn", false);
                 RecipesFragment recipesFragment = new RecipesFragment();
-                if (savedInstanceState == null) {
-                    getSupportFragmentManager().beginTransaction()
-                            .add(R.id.content_main, recipesFragment, "RecipesFragment")
-                            .commit();}
+                recipesFragment.setArguments(args);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_main, recipesFragment, "RecipesFragment")
+                        .commit();
             }
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
@@ -101,7 +115,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             int count = getSupportFragmentManager().getBackStackEntryCount();
             if (count == 0) {
-                finish();
+                this.finish();
             } else {
                 getSupportFragmentManager().popBackStack();
             }
@@ -135,16 +149,26 @@ public class MainActivity extends AppCompatActivity
             if(fragment!=null && fragment.isVisible()){
                 Boolean s = fragment.getBookmarked();
                 if(!s)
-                    Toast.makeText(fragment.getContext(),"You have no bookmarks!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(fragment.getContext(),"You have no bookmarks!", Toast.LENGTH_SHORT).show();
                 fragment.getActivity().setTitle("Bookmarked");
+                Bundle args = fragment.getArguments();
+                Boolean isOwn = args.getBoolean("isOwn");
+                //If coming from own, search item is already invisible
+                if(!isOwn)
+                    findViewById(R.id.action_search).setVisibility(View.INVISIBLE);
             }
         } else if (id == R.id.nav_my_own) {
             RecipesFragment fragment = (RecipesFragment)getSupportFragmentManager().findFragmentByTag("RecipesFragment");
             if(fragment!=null && fragment.isVisible()){
                 Boolean s = fragment.getOwn();
                 if(!s)
-                    Toast.makeText(fragment.getContext(),"You have not added any recipes of your own!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(fragment.getContext(),"You have not added any recipes of your own!", Toast.LENGTH_SHORT).show();
                 fragment.getActivity().setTitle("My recipes");
+                try {
+                    findViewById(R.id.action_search).setVisibility(View.INVISIBLE);
+                }catch (Exception e){
+                    System.out.print("Coming from own, search item already invisible, " + e.getMessage().toString());
+                }
             }
         } else if (id == R.id.nav_all){
             this.recreate();

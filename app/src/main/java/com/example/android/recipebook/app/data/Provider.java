@@ -15,7 +15,7 @@ import android.support.annotation.Nullable;
 public class Provider extends ContentProvider {
     private DatabaseHelper dbHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-    private static final int FAV = 101;
+    private static final int BK = 101;
     private static final int REC = 103;
 
     @Override
@@ -29,7 +29,7 @@ public class Provider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor;
         switch (sUriMatcher.match(uri)){
-            case FAV:{
+            case BK:{
                 retCursor= dbHelper.getReadableDatabase().query(
                         Contract.BookmarkedEntry.TABLE_NAME,
                         projection,
@@ -73,7 +73,7 @@ public class Provider extends ContentProvider {
         Uri returnUri;
         switch(sUriMatcher.match(uri))
         {
-            case FAV:
+            case BK:
             {
                 long _id = db.insert(Contract.BookmarkedEntry.TABLE_NAME,null,values);
                 if(_id >0)
@@ -105,7 +105,7 @@ public class Provider extends ContentProvider {
         // this makes delete all rows return the number of rows deleted
         if (null == selection) selection = "1";
         switch(sUriMatcher.match(uri)){
-            case FAV:{
+            case BK:{
                 rowsDeleted = db.delete(
                         Contract.BookmarkedEntry.TABLE_NAME, selection, selectionArgs);
                 break;
@@ -131,7 +131,7 @@ public class Provider extends ContentProvider {
         int rowsUpdated;
 
         switch (match) {
-            case FAV: {
+            case BK: {
                 rowsUpdated = db.update(Contract.BookmarkedEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
@@ -164,7 +164,7 @@ public class Provider extends ContentProvider {
         final String authority = Contract.CONTENT_AUTHORITY;
 
         // For each type of URI you want to add, create a corresponding code.
-        matcher.addURI(authority, Contract.PATH_BK, FAV);
+        matcher.addURI(authority, Contract.PATH_BK, BK);
         matcher.addURI(authority, Contract.PATH_REC, REC);
         return matcher;
     }

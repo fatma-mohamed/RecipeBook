@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.android.recipebook.app.MyRecipesAdapter;
+
 import java.util.ArrayList;
 
 import static com.example.android.recipebook.app.data.Contract.BookmarkedEntry.SOURCE_URL;
@@ -19,7 +21,7 @@ import static com.example.android.recipebook.app.data.Contract.BookmarkedEntry.S
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private final Context mContext;
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 11;
     private static String LOG_TAG = DatabaseHelper.class.getSimpleName();
 
     static final String DATABASE_NAME = "recipebook.db";
@@ -43,10 +45,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_RECIPES_TABLE = "CREATE TABLE " + Contract.RecipeEntry.TABLE_NAME + " (" +
                 Contract.RecipeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 Contract.RecipeEntry.NAME + " STRING NOT NULL, "+
-                Contract.RecipeEntry.PREPARE_TIME + " STRING NOT NULL, "+
-                Contract.RecipeEntry.NUMBER_OF_SERVINGS + " INTEGER NOT NULL, "+
-                Contract.RecipeEntry.INGREDIENTS + " STRING, "+
-                Contract.RecipeEntry.DIRECTIONS + " STRING);";
+                Contract.RecipeEntry.PREPARE_TIME + " STRING, "+
+                Contract.RecipeEntry.NUMBER_OF_SERVINGS + " INTEGER, "+
+                Contract.RecipeEntry.INGREDIENTS + " STRING  NOT NULL, "+
+                Contract.RecipeEntry.DIRECTIONS + " STRING  NOT NULL);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_RECIPES_TABLE);
     }
@@ -93,7 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return arr;
     }
 
-    public boolean favExists(String recipe_name)
+    public boolean bookmarkedExists(String recipe_name)
     {
         Cursor cursor = mContext.getContentResolver().query(
                 Contract.BookmarkedEntry.CONTENT_URI,
@@ -200,7 +202,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Contract.RecipeEntry.NAME + " = ?",
                 new String[]{recipe.getName()}
         );
-
         if(deletedRows>0)
             return true;
         else
@@ -210,7 +211,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Recipe> getOwnRecipes()
     {
         Cursor cursor = mContext.getContentResolver().query(
-                Contract.BookmarkedEntry.CONTENT_URI,
+                Contract.RecipeEntry.CONTENT_URI,
                 new String[]{Contract.RecipeEntry._ID,
                         Contract.RecipeEntry.NAME,
                         Contract.RecipeEntry.PREPARE_TIME,

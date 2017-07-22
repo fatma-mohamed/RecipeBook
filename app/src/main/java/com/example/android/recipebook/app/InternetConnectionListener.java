@@ -23,7 +23,7 @@ public class InternetConnectionListener extends BroadcastReceiver {
     {
         if(!isOnline(context)){
             Log.v(LOG_TAG,"No network");
-            Toast.makeText(context,"No internet connection", Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"No internet connection", Toast.LENGTH_SHORT).show();
         }
         else
         {
