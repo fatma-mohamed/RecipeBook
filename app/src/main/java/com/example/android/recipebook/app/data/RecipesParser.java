@@ -2,16 +2,13 @@ package com.example.android.recipebook.app.data;
 
 import android.util.Log;
 
+import com.example.android.recipebook.app.interfaces.DataParser;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Created by Fatma on 19-Nov-16.

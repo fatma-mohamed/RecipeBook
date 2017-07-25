@@ -1,4 +1,4 @@
-package com.example.android.recipebook.app;
+package com.example.android.recipebook.app.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.android.recipebook.app.R;
+import com.example.android.recipebook.app.activities.OwnRecipeDetailsActivity;
 import com.example.android.recipebook.app.data.DatabaseHelper;
 import com.example.android.recipebook.app.data.Recipe;
-
-import java.util.List;
 
 /**
  * Created by Fatma on 08-Jan-17.

@@ -1,4 +1,4 @@
-package com.example.android.recipebook.app;
+package com.example.android.recipebook.app.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -14,14 +14,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.recipebook.app.R;
+import com.example.android.recipebook.app.helpers.Utilities;
 import com.example.android.recipebook.app.data.DatabaseHelper;
 import com.example.android.recipebook.app.data.Recipe;
+import com.example.android.recipebook.app.fragments.RecipesFragment;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 
 
 public class MyRecipesAdapter extends BaseAdapter implements Filterable{

@@ -1,7 +1,5 @@
-package com.example.android.recipebook.app;
+package com.example.android.recipebook.app.fragments;
 
-import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,14 +8,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.recipebook.app.R;
 import com.example.android.recipebook.app.data.DatabaseHelper;
 import com.example.android.recipebook.app.data.Recipe;
-
-import static com.example.android.recipebook.app.R.id.ingredients;
 
 /**
  * Created by Fatma on 08-Jan-17.

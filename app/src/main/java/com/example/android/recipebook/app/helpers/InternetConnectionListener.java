@@ -1,4 +1,4 @@
-package com.example.android.recipebook.app;
+package com.example.android.recipebook.app.helpers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

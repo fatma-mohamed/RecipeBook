@@ -1,4 +1,4 @@
-package com.example.android.recipebook.app;
+package com.example.android.recipebook.app.helpers;
 
 import android.app.Application;
 import android.text.TextUtils;

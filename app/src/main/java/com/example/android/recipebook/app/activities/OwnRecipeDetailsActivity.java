@@ -1,10 +1,13 @@
-package com.example.android.recipebook.app;
+package com.example.android.recipebook.app.activities;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.example.android.recipebook.app.fragments.NewRecipeDetailsFragment;
+import com.example.android.recipebook.app.R;
 
 
 public class OwnRecipeDetailsActivity extends AppCompatActivity{

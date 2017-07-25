@@ -1,11 +1,10 @@
-package com.example.android.recipebook.app;
+package com.example.android.recipebook.app.fragments;
 
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
@@ -26,6 +25,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.android.recipebook.app.adapters.MyRecipesAdapter;
+import com.example.android.recipebook.app.R;
+import com.example.android.recipebook.app.helpers.VolleyController;
+import com.example.android.recipebook.app.activities.OwnRecipeDetailsActivity;
 import com.example.android.recipebook.app.data.Contract;
 import com.example.android.recipebook.app.data.DatabaseHelper;
 import com.example.android.recipebook.app.data.Recipe;
@@ -37,7 +40,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static android.R.attr.fragment;
 import static android.content.ContentValues.TAG;
 
 

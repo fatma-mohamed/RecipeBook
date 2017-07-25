@@ -1,12 +1,9 @@
-package com.example.android.recipebook.app;
+package com.example.android.recipebook.app.activities;
 
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.design.*;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,10 +15,12 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.android.recipebook.app.R;
+import com.example.android.recipebook.app.fragments.NewRecipeFragment;
+import com.example.android.recipebook.app.fragments.RecipesFragment;
+import com.example.android.recipebook.app.helpers.InternetConnectionListener;
 import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
-
-import static android.R.attr.fragment;
 
 
 public class MainActivity extends AppCompatActivity
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         if(!con.isOnline(this))
         {
             //Toast.makeText(this, "No internet connection!", Toast.LENGTH_SHORT).show();
-            setContentView(R.layout.activity_no_internet);
+            setContentView(com.example.android.recipebook.app.R.layout.activity_no_internet);
             Button try_again_btn = (Button)findViewById(R.id.try_again_btn);
             try_again_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         else {
             setContentView(R.layout.activity_main);
             //Instabug feedback
-            new Instabug.Builder(this.getApplication(), BuildConfig.INSTABUG_API_KEY)
+            new Instabug.Builder(this.getApplication(), com.example.android.recipebook.app.BuildConfig.INSTABUG_API_KEY)
                     .setInvocationEvent(InstabugInvocationEvent.SHAKE)
                     .build();
             this.getIntent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

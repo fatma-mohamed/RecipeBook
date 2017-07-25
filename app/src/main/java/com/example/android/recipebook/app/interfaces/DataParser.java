@@ -1,4 +1,4 @@
-package com.example.android.recipebook.app.data;
+package com.example.android.recipebook.app.interfaces;
 
 import org.json.JSONException;
 import org.json.JSONObject;

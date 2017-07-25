@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.android.recipebook.app.MyRecipesAdapter;
-
 import java.util.ArrayList;
 
 import static com.example.android.recipebook.app.data.Contract.BookmarkedEntry.SOURCE_URL;
